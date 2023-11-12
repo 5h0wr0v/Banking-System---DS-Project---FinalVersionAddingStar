@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-
-typedef struct Bank {
+ 
+typedef struct Bank { 
+ 
+// typedef eijnno use korchi karon amrader jno struct Bank barbar likha na lage
+// struct Bank er jaygay node likhlei hbe
+ 
     char name[100];
     char lastName[100];
     int savingNumber;
@@ -11,53 +15,61 @@ typedef struct Bank {
     int balance;
     int fix;
     int ac;
-    struct Bank* next;
+    struct Bank* next; // next node er adrs store korar jnno
 } node;
-
-node* start = NULL;
-
+ 
+node* start = NULL;  // head node initially null thake
+ 
 node* createnode() {
     node* n;
-    n = (node*)malloc(sizeof(node));
-    return (n);
+    n = (node*)malloc(sizeof(node)); // ei createnode function e mainly memory allocate korchi
+    return (n); // allocate kora memory return kore dichi ekhan theke
 }
-
+ 
 void printStars(int numStars) {
+    // ei function ta just single line e star printing er jnno implement korchi
+    // for design purpose
     for (int i = 0; i < numStars; i++) {
         printf("*");
     }
     printf("\n");
 }
-
+ 
 void printIndentedText(const char* text) {
-    printf("\t\t%s", text);
+    printf("\t\t%s", text); // tab printing
 }
-
+ 
 void insert() {
     node* temp, * prev;
     temp = createnode();
     int value1;
-
+ 
+    // prothom e account er detail gula input nichi
+    // amra jdi bank er node create korte cai amdr name, acc no, atm esb lagbe
+ 
     printStars(50);
     printf("REGISTER AN ACCOUNT\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the first name: ");
     scanf("%s", temp->name);
-
+ 
     printIndentedText("Enter the last name: ");
     scanf("%s", temp->lastName);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
-    if (start == NULL) {
-        flag = 0;
+ 
+    // amra prothom e cheak korbo already saving id ta eist kore kina
+    if (start == NULL) { // ekhane cheak korchi list ta empty kina
+        flag = 0; // empty hole flag = 0 kore dichi jate pore bujhte pari list is empty
     } else {
-        while (search != NULL) {
+        // 
+        while (search != NULL) { // jotokkhm na search null hoy loop colbe
             if (value1 == search->savingNumber) {
                 flag = 1;
                 printIndentedText("ID already exists\n");
@@ -67,7 +79,9 @@ void insert() {
             }
         }
     }
-
+ 
+    // ekhane flag 0  hole new acc create kora jabe
+    // ekhn account info gula input nibo
     if (flag == 0) {
         temp->savingNumber = value1;
         fflush(stdin);
@@ -77,11 +91,11 @@ void insert() {
         printIndentedText("Enter your address: ");
         scanf("%s", temp->address);
         fflush(stdin);
-
+ 
         printIndentedText("Do you want a credit or debit card? (1 for Yes, 2 for No): ");
         int option;
         scanf("%d", &option);
-
+ 
         if (option == 1) {
             printIndentedText("Initially 100 Taka deposited in this account\n");
             temp->fix = 100;
@@ -90,12 +104,14 @@ void insert() {
             temp->balance = 0;
             temp->fix = 0;
         }
-
-        int acc = rand() % 989785;
+ 
+ 
+        int acc = rand() % 1000009; // ekhane random ekta acc number generate korchi 
         printIndentedText("Unique bank account ID is ");
         printf("%d\n", acc);
         temp->ac = acc;
         temp->next = NULL;
+        // search kore list er ekebare sesh e jabo karon amra newnode always ist er sesh e add kori
         if (start == NULL) {
             start = temp;
         } else {
@@ -108,19 +124,22 @@ void insert() {
         printStars(50);
     }
 }
-
+ 
 void widraw() {
     int value1;
     printStars(50);
     printf("WITHDRAW MONEY\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
+ 
+    // ekhane search krbo je amra jei account theke taka widrew korbo seita kon node
+    // niche mainly search er code use kora hoiche saving no ta find korte
     if (start == NULL) {
         flag = 0;
     } else {
@@ -133,18 +152,20 @@ void widraw() {
             }
         }
     }
-
+ 
+    // jdi flag = 1 hoy tar mane saving no exist kore ekhn amr taka withdrew korte hbe
+ 
     if (flag == 1) {
         node* t = search;
         int limit;
-        printIndentedText("Enter the amount: ");
+        printIndentedText("Enter the amount: "); // joto taka withdrw korbo seta input nici
         scanf("%d", &limit);
-        if (limit > 0 && limit <= t->balance) {
-            t->balance -= limit;
+        if (limit > 0 && limit <= t->balance) { // ceak korlam balance withdrew takar ceye besi kina
+            t->balance -= limit; // taka ta bad diye dilam karo ei taka ta withddraw kora hoice
             printIndentedText("Amount debited from account no.");
             printf(" %d\n", t->ac);
             printIndentedText("Your current balance is ");
-            printf("%d taka\n", t->balance);
+            printf("%d taka\n", t->balance); // withdra korar por current balance koto seta print korlam
         } else {
             printIndentedText("Enter a valid limit\n");
         }
@@ -153,19 +174,22 @@ void widraw() {
     }
     printStars(50);
 }
-
+ 
 void deposit() {
     int value1;
     printStars(50);
     printf("DEPOSIT MONEY\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
+ 
+    // ekhaneo search kore ager moto acc no find korchi
+ 
     if (start == NULL) {
         flag = 0;
     } else {
@@ -178,14 +202,14 @@ void deposit() {
             }
         }
     }
-
+ 
     if (flag == 1) {
         node* t = search;
         int limit;
-        printIndentedText("Enter the amount: ");
+        printIndentedText("Enter the amount: "); // toto taka diposit krbo inout nichi
         scanf("%d", &limit);
         if (limit > 0) {
-            t->balance += limit;
+            t->balance += limit; /// main balance er sathe add kore dichi
             printIndentedText("Amount credited in account no");
             printf(" %d\n", t->ac);
             printIndentedText("Your current balance is ");
@@ -198,16 +222,16 @@ void deposit() {
     }
     printStars(50);
 }
-
-void fix() {
+ 
+void fix() { // ekhaneo diposit er same code just ekhane fix variable er sathe add koro
     int value1;
     printStars(50);
     printf("FIXED DEPOSIT\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
@@ -223,7 +247,7 @@ void fix() {
             }
         }
     }
-
+ 
     if (flag == 1) {
         node* t = search;
         int limit;
@@ -241,15 +265,15 @@ void fix() {
     }
     printStars(50);
 }
-
-void viewlist() {
+ 
+void viewlist() { // display function
     node* view;
     int count = 1;
-
+ 
     printStars(50);
     printf("VIEW ALL ACCOUNTS\n");
     printStars(50);
-
+ 
     if (start == NULL) {
         printIndentedText("List is empty.\n");
     } else {
@@ -282,17 +306,17 @@ void viewlist() {
         printf("%d\n", count);
     }
 }
-
-void view() {
+ 
+void view() { // search kore just oi node er info ta print kore deya
     int value1;
-
+ 
     printStars(50);
     printf("VIEW ACCOUNT\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
@@ -309,7 +333,7 @@ void view() {
             }
         }
     }
-
+ 
     if (flag == 1) {
         node* view = search;
         printStars(50);
@@ -335,17 +359,17 @@ void view() {
     }
     printStars(50);
 }
-
-void close() {
+ 
+void close() { // delete er application
     int value1;
-
+ 
     printStars(50);
     printf("CLOSE ACCOUNT\n");
     printStars(50);
-
+ 
     printIndentedText("Enter the Savings number: ");
     scanf("%d", &value1);
-
+ 
     int flag = 0;
     node* search;
     search = start;
@@ -372,7 +396,7 @@ void close() {
         } else {
             node* link;
             link = t->next;
-
+ 
             if (t->next == NULL) {
                 prev->next = NULL;
             } else {
@@ -384,14 +408,14 @@ void close() {
     }
     printStars(50);
 }
-
+ 
 int menu() {
     int choice;
-
+ 
     printStars(50);
     printf("DIU BANKING SYSTEM MENU\n");
     printStars(50);
-
+ 
     printIndentedText("1: Register an account\n");
     printIndentedText("2: Withdraw money\n");
     printIndentedText("3: Deposit money\n");
@@ -405,13 +429,13 @@ int menu() {
     scanf("%d", &choice);
     return (choice);
 }
-
+ 
 int main() {
     printStars(50);
     printf("WELCOME TO DIU BANKING SYSTEM\n");
-    printf("DEVELOPED BY AZAM, SADMAN, AZIM, RAJIN, AND PRITU\n");
+    printf("DEVELOPED BY SHOWROV, SADMAN, AZIM, RASHED, AND PRITU\n");
     printStars(50);
-
+ 
     while (1) {
         switch (menu()) {
             case 1:
@@ -437,7 +461,7 @@ int main() {
                 break;
             case 0:
                 printStars(50);
-                printIndentedText("Project by Sadman, Azam, Rashed, Azim, Pritu\n");
+                printIndentedText("Project by Sadman Shakib, Showrov Azam, Rashed, Azim, Pritu\n");
                 printStars(50);
                 exit(1);
                 break;
@@ -449,4 +473,3 @@ int main() {
     }
     return 0;
 }
-
